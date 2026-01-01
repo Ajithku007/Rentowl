@@ -1,0 +1,10 @@
+<div class="position-relative w-50 mx-auto my-auto mt-5" style="max-width:75%; margin-top:0;">
+    <form  action="{% url 'listings:search'%}">
+        {% csrf_token %}
+      <input type="text" class="form-control rounded-pill ps-4 p-3 "
+             placeholder="eg:camera,bike,car,properties..." name="q" value="{{ query }}">
+      <button  type="submit" class="btn btn-danger position-absolute top-50 end-0 translate-middle-y rounded-pill py-2 px-3 me-2">
+        Search
+      </button>
+    </form>
+</div>

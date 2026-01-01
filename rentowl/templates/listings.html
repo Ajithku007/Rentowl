@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!------  search bar  ----->
+
+<div class="position-relative w-50 mx-auto my-auto mt-5" style="max-width:75%; margin-top:0;">
+    <form  action="{% url 'listings:search'%}">
+
+      <input type="text" class="form-control rounded-pill ps-4 p-3 "
+             placeholder="eg:camera,bike,car,properties..." name="q">
+      <button  type="submit" class="btn btn-danger position-absolute top-50 end-0 translate-middle-y rounded-pill py-2 px-3 me-2">
+        Search
+      </button>
+    </form>
+</div>
+
+<!--  category buttons -->
+<div class="container mb-4 mt-4 d-flex flex-wrap gap-2" id="category-buttons">
+    <button type="button" class="btn btn-outline-primary rounded" data-category="all">All</button>
+    {% for cat in category %}
+        <button type="button" class="btn btn-outline-primary rounded" data-category="{{ cat }}">{{ cat }}</button>
+    {% endfor %}
+</div>
+
+<!--  products  -->
+<div class="container ">
+    <div class="row">
+        {% for i in products %}
+        <div class="col-md-2 product-card mb-3" data-category="{{ i.category }}">
+            <div class="card "  style="width:100%;">
+                <img src="{{ i.image.url }}" class="card-img-top border" alt="..." style="height:150px;">
+                <div class="card-body">
+                    <h5 class="card-title text-dark">{{ i.title }}</h5>
+                    <p class="card-text text-dark">{{ i.rent_price }}</p>
+                    <a href="{% url 'listings:productview' i.id %}" class="btn btn-primary">borrow</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="{% static 'js/listings.js' %}" defer></script>
+
+{% endblock %}

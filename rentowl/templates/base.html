@@ -1,0 +1,509 @@
+<!doctype html>
+{% load static %}
+{% load crispy_forms_tags %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rentowl</title>
+  <link rel="icon" type="image/png" href="{% static 'images/rentowllogo1.png' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
+
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+  <!-- Fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Link Bootstrap's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+
+
+  <!-- Google Fonts ================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- script ================================================== -->
+  <script src="js/modernizr.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbar-example2" tabindex="0">
+
+  <!-- nav bar start  -->
+  <header id="nav" class="site-header position-fixed text-white bg-dark w-100 ">
+    <nav id="navbar-example2" class="navbar navbar-expand-lg " style="background-color:#1F1A6A">
+
+      <div class="container">
+
+        <a class="navbar-brand pb-3 pt-3 " href="{% url 'accounts:homepage' %}" ><img src="{% static 'images/rentowllogo1.png' %}" alt="image" style="height:50px;width:50px"><strong class="fs-3 pt-3 text-light" > RENTOWL</strong></a>
+
+
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Toggle navigation"><ion-icon
+            name="menu-outline" style="font-size: 30px;"></ion-icon></button>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar2"
+          aria-labelledby="offcanvasNavbar2Label">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body ">
+            <ul class="navbar-nav  align-items-center justify-content-end align-items-center flex-grow-1 ">
+              <li class="nav-item ">
+                <a class="nav-link active me-md-4 text-light" href="{% url 'accounts:homepage' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-md-4 text-light" href="{% url 'listings:products' %}">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-md-4 text-light" href="#about-us">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-md-4 text-light" href="#help">Contact</a>
+              </li>
+
+
+
+              <!-- Modal -->
+
+               <div class="modal fade text-secondary fs-6" id="authModal" tabindex="-1" aria-hidden="true">
+                 <div class="modal-dialog modal-dialog-centered">
+                   <div class="modal-content p-3">
+
+      <!-- Tabs -->  <ul class="nav nav-tabs mb-3 " id="authTabs" role="tablist">
+                       <li class="nav-item" role="presentation">
+                         <button class="nav-link active btn " id="login-tab" data-bs-toggle="tab"
+                                data-bs-target="#login-tab-pane" type="button" role="tab">Login
+                         </button>
+                       </li>
+                       <li class="nav-item" role="presentation">
+                         <button class="nav-link btn " id="signup-tab" data-bs-toggle="tab"
+                             data-bs-target="#signup-tab-pane" type="button" role="tab">Signup
+                         </button>
+                       </li>
+                     </ul>
+
+      <!-- Tab Content -->
+                     <div class="tab-content">
+                        <div class="tab-pane fade show active" id="login-tab-pane" role="tabpanel">
+                          <form method="post" action="{% url 'accounts:userlogin' %}">
+                            {% csrf_token %}
+                           {{ loginform|crispy }}
+                             <div class="d-flex justify-content-center">
+                                <button class="btn btn-danger rounded ">Login</button>
+                             </div>
+                          </form>
+                        </div>
+
+        <!-- SIGNUP FORM -->
+                        <div class="tab-pane fade show  " id="signup-tab-pane" role="tabpanel">
+                          <form method="post" enctype="multipart/form-data" action="{% url 'accounts:register' %}">
+                          {% csrf_token %}
+                          {{ registerform|crispy}}
+                          <div class="d-flex justify-content-center">
+                                <input type="submit" class="btn btn-danger rounded " value="register">
+                          </div>
+                          </form>
+                        </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="btn-medium btn btn-success nav-link md-4  text-light rounded-4"   href="{% url 'listings:addproduct' %}" >Add product</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="btn-medium btn btn-danger nav-link mx-md-4 text-light rounded-4"   href="{% url 'accounts:userlogout'%}">Logout</a>
+              </li>
+<!--               <li class="nav-item">-->
+<!--                 <a href="{% url 'dashboard:dashboard' %}">-->
+<!--                <div class="rounded rounded-circle " style="height:40px;width:40px;background-size:cover;background-position:center;-->
+<!--                background-image:{% if request.user.profile_image %}-->
+<!--                 url('{{ request.user.profile_image.url }}')-->
+<!--                 {% else %}-->
+<!--                 url('{% static "images/rentowllogo.png" %}')-->
+<!--                 {% endif %};"> </div></a>-->
+<!--              </li>-->
+              <li class="nav-item">
+  <a href="{% url 'dashboard:dashboard' %}">
+    <div
+      class="rounded-circle"
+      style="
+        height:40px;
+        width:40px;
+        background-size:cover;
+        background-position:center;
+        background-image:
+        {% if request.user.is_authenticated and request.user.profile_image %}
+          url('{{ request.user.profile_image.url }}')
+        {% else %}
+          url('{% static 'images/rentowllogo.png' %}')
+        {% endif %};
+      ">
+    </div>
+  </a>
+</li>
+
+              {% else %}
+              <li class="nav-item">
+                <a class="btn-medium btn btn-danger nav-link mx-md-4 text-light rounded-4"   href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login/Register</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+<!--  logout message -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+  <!-- billboard start  -->
+<!--  <section id="billboard" style="background-image:url('{% static 'images/rentowlwallpaper2.jpg' %}');background-size:cover;height:100vh;">-->
+<!--  <section id="billboard" style="background-color:#4428D2;height:90vh;">-->
+
+<!--    <div class="container d-flex flex-column justify-content-center">-->
+<!--      <img src="{% static 'images/illu1.png' %}" height="400px" width="400px">-->
+
+<!--      <div class=" flex-lg-row-reverse align-items-center  ">-->
+<!--          <h1 class=" text-capitalize  lh-1 my-3 text-center " style="padding-top:100px">Why buy it? Rent it instead.</h1>-->
+<!--        <p class="lead text-center pt-3"><strong>Find anything you need — fast, affordable, and hassle-free.</strong></p>-->
+<!--      </div>-->
+
+<!--                      &lt;!&ndash;Search bar &ndash;&gt;-->
+<!--      <div class="position-relative w-100 mx-auto " style="max-width: 75%;margin-top:50px">-->
+<!--        <input type="text" class="form-control rounded-pill ps-4 p-3 " placeholder="eg:camera,bike,car,properties...">-->
+<!--        <button class="btn btn-danger position-absolute top-50 end-0 translate-middle-y py-2 px-3 me-2 rounded-pill px-3">-->
+<!--           Search-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </section>-->
+  {% block content %}
+<section id="billboard" style="height:90vh;background-color:#4428D2;" class=" d-flex align-items-center justify-content-center mb-5">
+  <img src="{% static 'images/illu1.png' %}" class="billboard-bg-img mx-auto" height="350px" width="300px" style="position:absolute;z-index:0;" >
+
+  <div class="content text-center d-flex flex-column justify-content-center " style="z-index:10; position:relative;" >
+    <div class="my-auto">
+    <h1 class="text-capitalize lh-1 text-light">
+      Why buy it? Rent it instead.
+    </h1>
+    <p class="lead pt-3 text-light">
+      <strong >Find anything you need — fast, affordable, and hassle-free.</strong>
+    </p>
+{% block searchbar %}
+    <div class="position-relative w-50 mx-auto" style="max-width:75%; margin-top:0;">
+      <form action="{% url 'listings:search'%}">
+      <input type="text" class="form-control rounded-pill ps-4 p-3 "
+             placeholder="eg:camera,bike,car,properties..." name="q">
+      <button class="btn btn-danger position-absolute top-50 end-0 translate-middle-y rounded-pill py-2 px-3 me-2">
+        Search
+      </button>
+        </form>
+    </div>
+{% endblock %}
+
+
+      <div class="d-flex justify-content-center p-5">
+        <a href="{% url 'listings:products' %}"><button type="submit" class="slice" ><span class="text">Explore</span></button></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- Residence start  -->
+<h3 class="text-center text-dark mb-5">RECENT ITEMS</h3>
+    <div class="horizontal-scroll ">
+      {% for i in recent_products %}
+      <div class="reveal-card shadow">
+        <div class="card position-relative" style="width: 18rem;">
+           <img src="{{ i.image.url }}" class="card-img-top" style="height:200px;" alt="...">
+           <div class="card-body ">
+              <h5 class="card-title text-dark">{{i.title}}</h5>
+              <p class="card-text text-dark">{{ i.rent_price }}</p>
+              <a href="#" class="btn btn-danger rounded-1 ">Borrow</a>
+<!--               <i class="fa-solid fa-cart-shopping" style="color:#4428D2"></i>-->
+               <i class="fa-regular fa-bookmark" style="color:#4428D2;position:absolute;top:20px;right:10px;font-size: 2rem"></i>
+           </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+
+
+  <!--About us start  -->
+  <section id="about-us">
+    <div class="container">
+      <div class="row py-lg-5">
+
+        <h2 class="text-capitalize text-center m-0 py-lg-5">Why to choose us</h2>
+
+        <div class="text-center col-lg-4">
+          <img src="{% static 'images/search.png' %}" class="bd-placeholder-img rounded-circle" alt="Bootstrap Themes" width="140"
+            height="140" loading="lazy">
+          <h4 class="fw-normal mt-5 ">Easy to find</h4>
+          <p>Urna, massa aliqua dui pellentesque. Ac, gravida in. Diam vitae, nec mattis lectus quam pretium amet
+            facilisis.</p>
+        </div>
+
+        <div class="text-center col-lg-4">
+          <img src="{% static 'images/price.png' %}" class="bd-placeholder-img rounded-circle" alt="Bootstrap Themes" width="140"
+            height="140" loading="lazy">
+          <h4 class="fw-normal mt-5">Affordable Prices</h4>
+          <p>Urna, massa aliqua dui pellentesque. Ac, gravida in. Diam vitae, nec mattis lectus quam pretium amet
+            facilisis.</p>
+        </div>
+
+        <div class="text-center col-lg-4">
+          <img src="{% static 'images/time.png' %}" class="bd-placeholder-img rounded-circle" alt="Bootstrap Themes" width="140"
+            height="140" loading="lazy">
+          <h4 class="fw-normal mt-5 ">Quickly Process</h4>
+          <p>Ac, gravida in diam vitae, nec mattis lectus quam pretium amet facilisis. Urna, massa aliqua dui
+            pellentesque. </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Testimonial start  -->
+  <section id="testimonial">
+    <div class="container my-5">
+
+
+
+      <div class="swiper testimonial-swiper">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide">
+            <div class="row my-5 py-lg-5">
+              <div class="col-md-8 mx-auto">
+                <img src="images/quote.png" class="rounded mx-auto d-inline" alt="...">
+                <p class="testimonial-p mt-4">Massa semper non rutrum orci facilisi sit. Lectus porta quam a fringilla
+                  eget viverra sem. Vulputate massa hendrerit turpis gravida tempor, porttitor.</p>
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <p class="pt-5 mb-1">Elena Pravo</p>
+                    <p class="">Ceo, Upstate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="row my-5 py-lg-5">
+              <div class="col-md-8 mx-auto">
+                <img src="images/quote.png" class="rounded mx-auto d-inline" alt="...">
+                <p class="testimonial-p mt-4">Massa semper non rutrum orci facilisi sit. Lectus porta quam a fringilla
+                  eget viverra sem. Vulputate massa hendrerit turpis gravida tempor, porttitor.</p>
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <p class="pt-5 mb-1">Elena Pravo</p>
+                    <p class="">Ceo, Upstate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="row my-5 py-lg-5">
+              <div class="col-md-8 mx-auto">
+                <img src="images/quote.png" class="rounded mx-auto d-inline" alt="...">
+                <p class="testimonial-p mt-4">Massa semper non rutrum orci facilisi sit. Lectus porta quam a fringilla
+                  eget viverra sem. Vulputate massa hendrerit turpis gravida tempor, porttitor.</p>
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <p class="pt-5 mb-1">Elena Pravo</p>
+                    <p class="">Ceo, Upstate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+        <div class=" testimonial-swiper-button col-md-3 position-absolute">
+          <div class="swiper-button-prev testimonial-arrow"></div>
+          <div class="arrow-divider"> | </div>
+          <div class="swiper-button-next testimonial-arrow"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+    <!-- Help start  -->
+  <section id="help" class="py-5"
+    style="background: linear-gradient(270deg, #1A242F 0.01%, rgba(26, 36, 47, 0.00) 100%);">
+    <div class="container-lg my-5">
+
+      <div class="row d-flex justify-content-between align-items-center">
+
+        <div class="col-md-6">
+          <div class="image-holder d-flex">
+            <img src="images/group.png" class="img-fluid" alt="Bootstrap Themes" loading="lazy">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="text-content ps-md-5 mt-4 mt-md-0">
+            <h2 class="text-capitalize">We help people to find homes</h2>
+            <p>Mauris orci donec blandit maecenas. Orci lorem purus porttitor massa consectetur. Neque, vestibulum sed
+              varius magna et at. Eu, adipiscing morbi augue justo. Nibh laoreet volutpat quis velit. Blandit aliquam
+              donec sed morbi congue eget lorem viverra porta id lobortis.</p>
+            <a href="index.html" class="btn btn-primary btn-lg">Get In Touch</a>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Lets start  -->
+  <section id="start">
+    <div class="container my-5 py-5">
+      <div class="row featurette py-lg-5 ">
+        <div class="col-md-5 order-md-1 d-flex">
+          <h1 class="text-capitalize  lh-1 mb-3">Let’s simply begin with rentiz.</h1>
+        </div>
+        <div class="col-md-7 order-md-2">
+          <div class="text-content ps-md-5 mt-4 mt-md-0">
+            <p class="py-lg-2">Neque, vestibulum sed varius magna et at. Eu, adipiscing morbi augue justo. Nibh
+              laoreet volutpat quis velit. Blandit aliquam donec sed morbi congue eget lorem viverra porta id
+              lobortis.</p>
+            <a href="index.html" class="btn btn-primary btn-lg px-4 me-md-2">Get
+              Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+  <!-- Footer start  -->
+  <section id="footer">
+    <div class="container footer-container">
+      <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5  ">
+
+        <div class=" col-md-4">
+          <h3><img src="images/logo.png" alt="image"></h3>
+          <p>Neque, vestibulum sed varius magna et at. Eu, adipiscing morbi augue.</p>
+          <i class="bi-facebook pe-4"></i>
+          <i class="bi-instagram pe-4"></i>
+          <i class="bi-twitter pe-4"></i>
+          <i class="bi-youtube pe-4"></i>
+        </div>
+
+        <div class="col-md-2 ">
+          <h5>Project</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Houses</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Rooms</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Flats</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Appartments</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 ">
+          <h5>Company</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">How we work ?</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Capital </a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Security </a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 ">
+          <h5>Movement</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Movement</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Support us</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 ">
+          <h5>Help</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Privacy </a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Condition</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Blog</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">FAQs</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center border-top"></footer>
+
+    <div class="container">
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 ">
+        <div class="col-md-8 d-flex align-items-center">
+          <p>© 2023 TemplatesJungle, Inc. All rights reserved.</p>
+
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <p>HTML template by: <a href="https://templatesjungle.com/" class="link-primary"
+              target="_blank">TemplatesJungle</a> <br> Distributed by: <a href="https://themewagon.com" class="link-primary"
+              target="_blank">ThemeWagon</a></p>
+
+        </div>
+
+      </footer>
+    </div>
+  </section>
+
+
+
+
+  <script src="js/jquery-1.11.0.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
