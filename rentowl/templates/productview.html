@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<style>
+/* MAIN CALENDAR BOX */
+.flatpickr-calendar {
+    border-radius: 20px !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.1) !important;
+    padding: 10px 0 !important;
+    border: none !important;
+}
+
+/* MONTH HEADER */
+.flatpickr-months {
+    padding: 10px 0 !important;
+}
+
+.flatpickr-current-month {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+}
+
+/* ARROWS */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+    top: 10px !important;
+    color: #4428D2 !important;
+    fill: #4428D2 !important;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+    color: #301AA5 !important;
+    fill: #301AA5 !important;
+}
+
+/* WEEKDAYS */
+.flatpickr-weekday {
+    color: #999 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+/* DAY CELLS */
+.flatpickr-day {
+    font-size: 15px !important;
+    border-radius: 8px !important;
+    height: 42px !important;
+    line-height: 42px !important;
+    width: 42px !important;
+    margin: 2px !important;
+}
+
+/* HOVER */
+.flatpickr-day:hover {
+    background: #eee !important;
+}
+
+/* TODAY BORDER */
+.flatpickr-day.today {
+    border: 1px solid #4428D2 !important;
+    color: #000 !important;
+}
+
+/* DISABLED */
+.flatpickr-day.disabled {
+    color: #ccc !important;
+}
+
+/* SELECTED START, END & SINGLE DATE */
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected {
+    background: #4428D2 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}
+
+/* FULL RANGE (IN-BETWEEN DATES SAME PURPLE) */
+.flatpickr-day.inRange {
+    background: #6A4CF0 !important;  /* lighter shade of #4428D2 */
+    color: #fff !important;
+    border-radius: 0 !important;
+}
+
+/* HOVER ON RANGE */
+.flatpickr-day.inRange:hover {
+    background: #5A3DE5 !important;
+}
+
+/* RESET ROUNDING BETWEEN RANGE */
+.flatpickr-day.startRange {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.flatpickr-day.endRange {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+
+     .product-card {
+    max-width: 520px;
+    width: 100%;
+    background: #fff;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+  }
+
+  .detail-row span:first-child {
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  .detail-row span:last-child {
+    font-weight: 600;
+    color: #212529;
+  }
+
+  .description-text {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+</style>
+
+<div class="text-dark container">
+<div class="row border border-3 mt-5 rounded-2 shadow ">
+    <div class="col-6 d-flex justify-content-center align-items-center">
+        <img src="{{ product.image.url }}" height="300px" width="300px">
+    </div>
+    <div class="col-6 d-flex align-items-center mt-5 b-3 " style="height:600px">
+
+       <form method="post" class="mx-auto" action="{% url 'orders:bookingorder' product.id %} " id="bookingForm" >
+           {% csrf_token %}
+        <div class="d-flex flex-column align-items-center p-3 mt-0 shadow rounded-4 bg-white mx-auto" style="width: 100%;">
+             <input id="calendar" name="date_range" class="form-control border-0 " placeholder="Select a date" style="width:150px;">
+
+            <h5 class="text-dark mt-3" id="priceView">Total: </h5>
+
+            {% if not user_order %}
+             <button type="submit" class="btn btn-danger ">Send Request</button>
+
+
+            {% else %}
+                {% if user_order.status == "requested" %}
+                  <button  class="btn btn-danger">Requested</button>
+                {% elif user_order.status == "accepted" %}
+                  <button  class="btn btn-danger">Booking Confirmed</button>
+                {% elif user_order.status == "rejected" %}
+                  <button  class="btn btn-danger mb-3">Rejected</button>
+               {% elif user_order.status == "canceled" %}
+                  <button type="submit" class="btn btn-danger">Book Again</button>
+               {% endif %}
+            {% endif %}
+
+
+        </div>
+       </form>
+    </div>
+</div>
+
+<!--    <div class="container shadow mt-5 mb-5 w-50 ">-->
+<!--        <div class="container w-50 mx-auto p-3">-->
+<!--            <p>title:{{ product.title }}</p>-->
+<!--            <p>category:{{ product.category }}</p>-->
+<!--            <p>deposit:{{ product.deposit_price }}</p>-->
+<!--            <p>location:{{ product.location }}</p>-->
+<!--            <p>description:{{ product.description }}</p>-->
+<!--        </div>-->
+
+<!--    </div>-->
+    <div class="container mt-5 mb-5 d-flex justify-content-center">
+  <div class="product-card shadow-lg rounded-4 p-4">
+
+    <h4 class="fw-bold mb-3 text-center">{{ product.title }}</h4>
+
+    <div class="detail-row">
+      <span>Category</span>
+      <span>{{ product.category }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span>Deposit</span>
+      <span>₹ {{ product.deposit_price }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span>Location</span>
+      <span>{{ product.location }}</span>
+    </div>
+
+    <div class="mt-3">
+      <p class="text-muted fw-semibold mb-1">Description</p>
+      <p class="description-text">
+        {{ product.description }}
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+
+    {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} text-center">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const fp=flatpickr("#calendar", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        inline: true,
+        showMonths: 1,
+
+        prevArrow: "<span style='font-size:22px;'>&#8249;</span>",
+        nextArrow: "<span style='font-size:22px;'>&#8250;</span>",
+
+        onChange: function () {
+
+    const calendarValue = document.getElementById("calendar").value;
+    // example: "2025-12-20 to 2025-12-22"
+
+    if (calendarValue.includes(" to ")) {
+        const [start, end] = calendarValue.split(" to ");
+
+        fetch(`?start_date=${start}&end_date=${end}`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("priceView").innerText =
+                `Total: ₹${data.price}`;
+        });
+    }
+}
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("bookingForm");
+    console.log("FORM FOUND:", form);
+
+    form.addEventListener("submit", function () {
+        console.log("SUBMIT HANDLER FIRED");
+
+        const calendarValue = document.getElementById("calendar").value;
+        console.log("CALENDAR VALUE:", calendarValue);
+
+        if (calendarValue.includes(" to ")) {
+            const [start, end] = calendarValue.split(" to ");
+            document.getElementById("startDate").value = start;
+            document.getElementById("endDate").value = end;
+        }
+    });
+
+});
+</script>
+
+
+
+
+
+{% endblock %}
