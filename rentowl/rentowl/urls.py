@@ -25,6 +25,7 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('orders/', include('orders.urls')),
     path('payments/', include('payments.urls')),
+    path('oauth/',include('social_django.urls',namespace='social')),
 ]
 if settings.DEBUG:
   urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
