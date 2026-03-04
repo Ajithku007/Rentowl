@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z_3zi*p1nt)d7&awgum1k25ut)wz6k2)w@!+kcemxqngxfcksu'
+import os
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles','accounts',
     'dashboard','listings','orders','payments',
-    'crispy_forms','crispy_bootstrap5'
+    'crispy_forms','crispy_bootstrap5','social_django'
 
 ]
 
@@ -73,7 +76,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rentowl.wsgi.application'
+LOGIN_REDIRECT_URL = '/'
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=os.environ.get("GOOGLE_CLIENT_ID")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=os.environ.get("GOOGLE_CLIENT_SECRET")
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -104,6 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS=(
+    'social_core.backends.google.GoogleOAuth2',
+     'django.contrib.auth.backends.ModelBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
