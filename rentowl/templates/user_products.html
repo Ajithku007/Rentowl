@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>listed products</h3>
+
+{% load static %}
+
+<div class="container mt-4">
+  <div class="row">
+
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+
+        <!-- Product Image -->
+        {% if product.image %}
+          <img src="{{ product.image.url }}"
+               class="card-img-top"
+               style="height:200px; object-fit:cover;">
+        {% else %}
+          <img src="{% static 'images/rentowllogo.png' %}"
+               class="card-img-top"
+               style="height:200px; object-fit:cover;">
+        {% endif %}
+
+        <div class="card-body">
+
+          <h5 class="card-title">{{ product.name }}</h5>
+
+          <p class="card-text text-muted">
+            ₹{{ product.rent_price }} / day
+          </p>
+
+          <p class="card-text">
+            {{ product.description|truncatewords:10 }}
+          </p>
+
+        </div>
+
+        <div class="card-footer bg-white border-0 ">
+
+          <a href="{% url 'dashboard:editproduct' product.id %}"
+             class="btn btn-sm btn-primary rounded">
+            Edit
+          </a>
+          <a href="{% url 'dashboard:Deleteproduct' product.id %}"
+             class="btn btn-sm btn-outline-danger rounded">
+            Delete
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

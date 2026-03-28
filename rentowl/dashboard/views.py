@@ -65,3 +65,48 @@ class Editprofile(View):
         if form_instance.is_valid():
             form_instance.save()
         return redirect('dashboard:dashboard')
+
+
+
+# ----- order detail-------
+class Order_detail(View):
+    def get(self,request,pk):
+        order=get_object_or_404(Order,id=pk)
+        return render(request,'order_detail.html',{'order':order})
+
+
+#     ----- user's listed products---
+from listings.models import Products
+class listed_products(View):
+    def get(self,request):
+        products=Products.objects.filter(owner=request.user)
+        return render(request,'user_products.html',{'products':products})
+
+
+
+from listings.forms import Productform
+# edit listed product
+class EditProductView(View):
+    def get(self, request, pk):
+        product = Products.objects.get(id=pk)
+        form = Productform(instance=product)
+        return render(request, "edit_product.html", {"form": form})
+
+    def post(self, request, pk):
+        product = Products.objects.get(id=pk)
+        form = Productform(request.POST, request.FILES, instance=product)
+
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard:my-products")
+
+        return render(request, "edit_product.html", {"form": form})
+
+
+# delete listed product
+class DeleteProduct(View):
+    def get(self,request,pk):
+        product=get_object_or_404(Products,id=pk)
+        if product.owner==request.user:
+         product.delete()
+        return redirect('dashboard:listedproducts')

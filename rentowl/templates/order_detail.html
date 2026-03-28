@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{% load static %}
+
+<div class="container mt-5 pt-3 mb-5">
+    <h3 class="text-center mb-3">Order Detail</h3>
+  <div class="card shadow-sm w-75 mx-auto ">
+    <div class="row g-0">
+
+      <!-- Product Image -->
+      <div class="col-md-4">
+        {% if order.product.image %}
+          <img src="{{ order.product.image.url }}"
+               class="img-fluid rounded-start"
+               style="height:100%; object-fit:cover;">
+        {% else %}
+          <img src="{% static 'images/rentowllogo.png' %}"
+               class="img-fluid rounded-start">
+        {% endif %}
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-8 ">
+        <div class="card-body ">
+
+          <h5 class="card-title">{{ order.product.name }}</h5>
+
+          <p class="card-text">
+            <strong>Status:</strong>
+            <span class="badge bg-info">{{ order.status }}</span>
+          </p>
+
+          <p class="card-text">
+            <strong>Owner:</strong> {{ order.product.owner.username }}
+          </p>
+
+          <p class="card-text">
+            <strong>From:</strong> {{ order.start_date }}
+          </p>
+
+          <p class="card-text">
+            <strong>To:</strong> {{ order.end_date }}
+          </p>
+
+          <p class="card-text">
+            <strong>Price per day:</strong> ₹{{ order.product.rent_price }}
+          </p>
+
+            <a
+             href="https://wa.me/91{{ order.product.owner.phone }}?text=Hi%20I%20am%20interested%20in%20{{ order.product.title }}%20from%20RentOwl"
+             target="_blank"
+             class="btn btn-success rounded">
+             Chat on WhatsApp
+             </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

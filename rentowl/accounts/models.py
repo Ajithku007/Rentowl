@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class User(AbstractUser):
-    phone=models.IntegerField(blank=True,null=True)
+    phone=models.CharField(blank=True,null=True,max_length=15)
     address=models.TextField(blank=True,null=True)
     profile_image=models.ImageField(upload_to='profile_images',blank=True,null=True)
 

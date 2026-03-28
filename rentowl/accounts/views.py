@@ -36,12 +36,14 @@ class Register(View):
         return render(request,'base.html',context)
 
 class Userlogin(View):
+
     def post(self,request):
         loginform_instance=Loginform(request.POST)
+        print(loginform_instance.errors)
         if loginform_instance.is_valid():
             u=loginform_instance.cleaned_data['username']
             p=loginform_instance.cleaned_data['password']
-            user=authenticate(username=u,password=p)
+            user=authenticate(request,username=u,password=p)
             if user :
                 login(request, user)
                 if user.is_superuser:
@@ -50,7 +52,7 @@ class Userlogin(View):
                     return redirect('accounts:homepage')
             else:
                 messages.error(request, "invalid credentials")
-                return redirect('accounts:userlogin')
+                return redirect('accounts:homepage')
 
 
 class Userlogout(View):

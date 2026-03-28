@@ -1,17 +1,29 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
 <div class="container mt-4">
 
   <div class=" container mt-5 mb-5 w-25">
-    <div class="rounded rounded-circle mx-auto " style="height:100px;width:100px;background-size:cover;background-position:center;background-image:url('{{ request.user.profile_image.url}}')">
-    </div>
+    <div class="rounded rounded-circle mx-auto"
+     style="height:100px;width:100px;background-size:cover;background-position:center;
+     background-image:
+     {% if request.user.profile_image %}
+         url('{{ request.user.profile_image.url }}')
+     {% else %}
+         url('{% static 'images/rentowllogo.png' %}')
+     {% endif %};">
+</div>
     <div>
       <h5 class="text-center">{{ request.user.username }}</h5>
     </div>
     <div class="d-flex justify-content-center ">
-      <a class="btn border border-3 border-secondary rounded-3 p-0 w-50" href="{% url 'dashboard:editprofile' %}">Edit Profile</a>
+      <a class="btn border border-3 border-secondary rounded-3 p-0 w-50 me-3" href="{% url 'dashboard:editprofile' %}">Edit Profile</a>
+      <a class="btn border border-3 border-secondary rounded-3 p-0 w-50" href="{% url 'dashboard:listedproducts' %}">My Listings </a>
     </div>
+<!--    <div class="d-flex justify-content-center mt-3">-->
+<!--      <a class="btn border border-3 border-secondary rounded-3 p-0 w-50" >My Listings </a>-->
+<!--    </div>-->
   </div>
 
   <!-- ================= HEADER ================= -->
@@ -66,7 +78,7 @@
       </thead>
       <tbody>
         {% for order in my_orders %}
-        <tr>
+        <tr onclick="window.location='{% url 'dashboard:Orderdetail' order.id %}'" style="cursor:pointer;">
           <td>{{ order.product.title }}</td>
           <td>{{ order.start_date }} → {{ order.end_date }}</td>
           <td>
@@ -78,6 +90,7 @@
               {{ order.status }}
             </span>
           </td>
+
         </tr>
         {% endfor %}
       </tbody>

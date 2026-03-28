@@ -156,7 +156,7 @@
         background-size:cover;
         background-position:center;
         background-image:
-        {% if request.user.is_authenticated and request.user.profile_image %}
+        {% if request.user.is_authenticated and request.user.profile_image.name %}
           url('{{ request.user.profile_image.url }}')
         {% else %}
           url('{% static 'images/rentowllogo.png' %}')

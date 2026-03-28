@@ -26,4 +26,8 @@ urlpatterns = [
 path('dashboard/',views.Dashboardview.as_view(),name='dashboard'),
 path("order/<int:order_id>/update/", views.UpdateOrderStatusView.as_view(), name="update_order_status"),
     path('Editprofile/',views.Editprofile.as_view(),name="editprofile"),
+    path('OrderDetail/<int:pk>/',views.Order_detail.as_view(),name="Orderdetail"),
+    path('Products_listed/',views.listed_products.as_view(),name="listedproducts"),
+    path('Editproduct/<int:pk>/',views.EditProductView.as_view(),name='editproduct'),
+    path('DeleteProduct/<int:pk>/',views.DeleteProduct.as_view(),name='Deleteproduct')
 ]
