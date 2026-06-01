@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="container d-flex justify-content-center mt-5 mb-5">
+  <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 500px; width: 100%;">
+
+    <h4 class="text-center fw-bold mb-3">Edit Item</h4>
+
+    <form method="post" enctype="multipart/form-data" class="lh-sm">
+      {% csrf_token %}
+
+      {{ form|crispy }}
+
+      <div class="mt-4 d-grid">
+        <button class="btn btn-danger btn-lg rounded-pill" type="submit">
+          Add
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+{% endblock %}
